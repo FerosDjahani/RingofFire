@@ -12,6 +12,7 @@ export class StartscreenComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
 
   newGame(){
     //Start Game
