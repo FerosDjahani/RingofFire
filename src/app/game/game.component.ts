@@ -13,11 +13,13 @@ export class GameComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.newGame();
   }
 
 
   newGame(){
       this.game = new Game();
+      console.log(this.game);
   }
 
 
