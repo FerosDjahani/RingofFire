@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 export class StartscreenComponent implements OnInit {
 
   constructor(private router: Router) { }
+  gamesound = new Audio('assets/sound/gamestart.ogg');
+
 
   ngOnInit(): void {
   }
@@ -16,6 +18,8 @@ export class StartscreenComponent implements OnInit {
 
   newGame(){
     //Start Game
+    this.gamesound.play();
+
     this.router.navigateByUrl('/game');
   }
 

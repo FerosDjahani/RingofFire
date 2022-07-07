@@ -3,6 +3,8 @@ import { Game } from 'src/models/game';
 import {MatDialog} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 
+
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -19,6 +21,8 @@ export class GameComponent implements OnInit {
     this.newGame();
   }
 
+  cardsound = new Audio('assets/sound/cardflip.mp3');
+
 
   newGame(){
       this.game = new Game();
@@ -28,7 +32,8 @@ export class GameComponent implements OnInit {
 
   takeCard(){
     if (!this.pickCardAnimation) {
-      
+      this.cardsound.play();
+
     this.currentCard = this.game.stack.pop();
     console.log(this.currentCard);
     this.pickCardAnimation = true;
