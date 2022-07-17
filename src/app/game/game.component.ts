@@ -3,8 +3,11 @@ import { Game } from 'src/models/game';
 import {MatDialog} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 
+import { EditPlayerComponent } from '../edit-player/edit-player.component';
+
+let game = new Game();
 
 
 
@@ -18,12 +21,13 @@ export class GameComponent implements OnInit {
  
   game: Game;
   gameId: string;
+  gameOver = false;
 
   
 
 
   constructor(private route:ActivatedRoute, private firestore: AngularFirestore, 
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,private router: Router) { }
 
   ngOnInit(): void {
     this.newGame();
@@ -41,7 +45,8 @@ export class GameComponent implements OnInit {
       this.game.currentPlayer = game.currentPlayer;
       this.game.playedCards = game.playedCards;
       this.game.players = game.players;
-      this.game.stack = game.stack;
+      this.game.players = game.players;
+      this.game.player_images = game.player_images;
       this.game.pickCardAnimation = game.pickCardAnimation;
       this.game.currentCard = game.currentCard;
     });
@@ -50,17 +55,28 @@ export class GameComponent implements OnInit {
 
   }
   cardsound = new Audio('assets/sound/cardflip.mp3');
-
+  
 
   newGame(){
-      this.game = new Game();
       
+    this.game = new Game();
+   
+    this.firestore
+        .collection('games')
+        .add(game.toJson())
+        .then((gameInfo: any) => {
+          this.router.navigateByUrl('/game/' +gameInfo.id);
+
+        });
       
   }
 
 
   takeCard(){
-    if (!this.game.pickCardAnimation) {
+    if(this.game.stack.length == 0){
+      this.gameOver = true;
+    }
+    else if (!this.game.pickCardAnimation) {
       this.cardsound.play();
 
     this.game.currentCard = this.game.stack.pop();
@@ -80,6 +96,27 @@ export class GameComponent implements OnInit {
 
     }
   }
+  editPlayer(playerId: number){
+    console.log('Edit player',playerId);
+
+    const dialogRef = this.dialog.open(EditPlayerComponent);
+    dialogRef.afterClosed().subscribe((change: string) => {
+      console.log('Recieved change',change);
+      if (change){
+        if(change == 'DELETE'){
+          this.game.players.splice(playerId,1)
+          this.game.player_images.splice(playerId,1)
+
+        } else {
+         
+          this.game.player_images[playerId] = change;
+        }
+        this.saveGame(); 
+     
+    }
+    });
+
+  }
   
 
   openDialog(): void {
@@ -88,6 +125,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if(name && name.length >0){
       this.game.players.push(name);
+      this.game.player_images.push('goku.jpg');
       this.saveGame();
       }
     });

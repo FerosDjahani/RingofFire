@@ -87,3 +87,41 @@
             margin-left: 8px;
         }
     }
+    
+    app-player,
+    app-player-mobile {
+        cursor: pointer;
+        &:hover {
+            filter: brightness(1.15);
+        }
+    }
+    
+    .game_ov {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+            width: 400px;
+            margin-top: 200px;
+        }
+    }
+    
+    .start-label-box {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 110px;
+        display: flex;
+        justify-content: center;
+        img {
+            width: 25vw;
+            height: auto;
+            @media (max-width: 960px) {
+                width: 400px;
+            }
+            &:hover {
+                filter: brightness(1.25);
+                cursor: pointer;
+            }
+        }
+    }
