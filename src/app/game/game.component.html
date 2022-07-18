@@ -11,7 +11,7 @@
 <div *ngIf="gameOver" class="game_ov">
     <img src="assets/img/gameover.png">
     <div class="start-label-box">
-        <img (click)="resetGame()" src="assets/img/startlabel.png">
+        <img (click)="navigateToLogin()" src="assets/img/playagain.png">
     </div>
 </div>
 <div *ngIf="!gameOver" class="field">

@@ -3,9 +3,11 @@ import { Game } from 'src/models/game';
 import {MatDialog} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
+
+
 
 
 
@@ -23,10 +25,12 @@ export class GameComponent implements OnInit {
   gameOver = false;
 
   
+  
 
+  
 
   constructor(private route:ActivatedRoute, private firestore: AngularFirestore, 
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,private router: Router) { }
 
   ngOnInit(): void {
     this.newGame();
@@ -54,7 +58,8 @@ export class GameComponent implements OnInit {
 
   }
   cardsound = new Audio('assets/sound/cardflip.mp3');
-  
+  gamesound = new Audio('assets/sound/gamestart.ogg');
+  gameover = new Audio('assets/sound/over.mp3');
 
   newGame(){
       
@@ -63,18 +68,15 @@ export class GameComponent implements OnInit {
       
   }
 
-  resetGame(){
-    this.reload;
-  }
-  
-  
-  reload(){
-    this.window.location = 'index.html';
-  
-  }
+  navigateToLogin(){
+    this.gamesound.play();
+    this.router.navigateByUrl("/");
+ }
 
   takeCard(){
     if(this.game.stack.length == 0){
+      this.gameover.play();
+
       this.gameOver = true;
     }
     else if (!this.game.pickCardAnimation) {
