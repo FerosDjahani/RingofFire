@@ -3,11 +3,10 @@ import { Game } from 'src/models/game';
 import {MatDialog} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ActivatedRoute,Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
-let game = new Game();
 
 
 
@@ -27,7 +26,7 @@ export class GameComponent implements OnInit {
 
 
   constructor(private route:ActivatedRoute, private firestore: AngularFirestore, 
-    public dialog: MatDialog,private router: Router) { }
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.newGame();
@@ -60,17 +59,19 @@ export class GameComponent implements OnInit {
   newGame(){
       
     this.game = new Game();
-   
-    this.firestore
-        .collection('games')
-        .add(game.toJson())
-        .then((gameInfo: any) => {
-          this.router.navigateByUrl('/game/' +gameInfo.id);
 
-        });
       
   }
 
+  resetGame(){
+    this.reload;
+  }
+  
+  
+  reload(){
+    this.window.location = 'index.html';
+  
+  }
 
   takeCard(){
     if(this.game.stack.length == 0){
@@ -138,9 +139,10 @@ export class GameComponent implements OnInit {
     .doc(this.gameId)
     .update(this.game.toJson());
   }
-
-
+  
 }
+
+
 
 
 
