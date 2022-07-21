@@ -2,8 +2,9 @@
     {{player}}
 </app-player>
 
-<div class="scroll-container hide desktop">
-    <app-player-mobile (click)="editPlayer(i)" *ngFor="let player of game.players; let i = index; " [image]="game.player_images[i]" [playerActive]="i == game.currentPlayer" [name]="player" class="scroll-container hide-desktop">
+
+<div class="scroll-container hide-desktop">
+    <app-player-mobile (click)="editPlayer(i)" *ngFor="let player of game.players; let i = index; " [image]="game.player_images[i]" [playerActive]="i == game.currentPlayer" [name]="player">
         {{player}}
     </app-player-mobile>
 </div>
